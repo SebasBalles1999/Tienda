@@ -2,6 +2,7 @@ package Tienda.controller;
 
 import Tienda.dao.ClienteDao;
 import Tienda.domain.Cliente;
+import Tienda.service.ClienteService;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class IndexController {
     
     @Autowired
-    private ClienteDao clienteDao;
+    private ClienteService clienteService;
     
     @GetMapping("/")
     public String inicio(Model model){
@@ -27,9 +28,33 @@ public class IndexController {
         model.addAttribute("cliente",cliente);
         var clientes = Arrays.asList(cliente);*/
         
-        var clientes = clienteDao.findAll();
+        var clientes = clienteService.getClientes();
         model.addAttribute("clientes", clientes);
         
         return "index";
     }
+    
+    @GetMapping("/nuevoCliente")
+    public String nuevoCliente(Cliente cliente){
+        return "modificarCliente";
+    }
+    @PostMapping("/guardarCliente")
+    public String guardarCliente(Cliente cliente){
+        clienteService.save(cliente);
+        return "redirect:/";
+    }
+    
+    @GetMapping("/modificarCliente/{idCliente}")
+    public String modificarCliente(Cliente cliente, Model model){
+        cliente = clienteService.getCliente(cliente);
+        model.addAttribute("cliente", cliente);
+        return "modificarCliente";
+    }
+    
+    @GetMapping("/eliminarCliente/{idCliente}")
+    public String eliminarCliente(Cliente cliente){
+        clienteService.delete(cliente);
+        return "redirect:/";
+    }
+    
 }
