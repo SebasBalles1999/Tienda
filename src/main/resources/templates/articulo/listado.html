@@ -9,15 +9,18 @@
     <body>
         <header th:replace="layout/plantilla :: header" />
         <div class="contenido">
-            <h2>Lista de articulos</h2>
-            <div th:if="${articulos != null and !articulos.empty}">
+            <h2 th:text="#{articulo.titulo}">Lista de articulos</h2>
+            <a th:href="@{/articulo/nuevo}" th:text="#{articulo.nuevo}"
+               <div th:if="${articulos != null and !articulos.empty}"></a>
                 <table border="1">
                     <thead id="encabezadoTabla">
                         <tr>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Existencias</th>
-                            <th>Activo</th>
+                            <th th:text="#{articulo.descripcion}">Descripción</th>
+                            <th th:text="#{articulo.precio}">Precio</th>
+                            <th th:text="#{articulo.existencias}">Existencias</th>
+                            <th th:text="#{articulo.activo}">Activo</th>
+                            <th th:text="#{accion.actualizar}"></th>
+                            <th th:text="#{accion.eliminar}"></th>
 
                         </tr>
                     </thead>
@@ -27,8 +30,10 @@
                             <td th:text="${#numbers.formatDecimal(item.precio, 3, 2)}"></td>
                             <td th:text="${item.existencias}"></td>
                             <td><input type="checkbox" name="activo" th:checked="${item.activo}" disabled="true" /></td>
-                            <td><a th:href="@{/articulo/modificar/} + ${item.idArticulo}">Modificar</a></td>
-                            <td><a th:href="@{/articulo/eliminar/} + ${item.idArticulo}">Eliminar</a></td>
+                            <td><a th:href="@{/articulo/modificar/} + ${item.idArticulo}"
+                                   th th:text="#{accion.actualizar}"></th>>Modificar</a></td>
+                            <td><a th:href="@{/articulo/eliminar/} + ${item.idArticulo}"
+                                   th:text="#{accion.eliminar}">Eliminar</a></td>
 
 
                         </tr>
@@ -37,7 +42,7 @@
             </div>
 
             <div th:if="${articulos == null or articulos.empty}">
-                No tenemos articulos para mostrar...
+                <p th:text="#{articulo.no_mostrar}"></p>
             </div>
         </div>
 
